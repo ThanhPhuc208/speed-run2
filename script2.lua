@@ -1,85 +1,41 @@
-local OrionLib = loadstring(game:HttpGet("https://githubusercontent.com"))()
-local Window = OrionLib:MakeWindow({Name = "Admin Menu (ThanhPhuc)", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+-- LocalScript
+-- Đặt trong StarterPlayerScripts
 
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local player = Players.LocalPlayer
+local Lighting = game:GetService("Lighting")
 
-local speedValue = 16
-local jumpValue = 50
-local isGodMode = false
-local isNoclip = false
+-- Bloom
+local bloom = Instance.new("BloomEffect")
+bloom.Intensity = 1.5
+bloom.Size = 56
+bloom.Threshold = 1
+bloom.Parent = Lighting
 
-RunService.Stepped:Connect(function()
-    local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = speedValue
-            humanoid.JumpPower = jumpValue
-            if isGodMode then
-                humanoid.MaxHealth = math.huge
-                humanoid.Health = math.huge
-            end
-        end
-        if isNoclip then
-            for _, part in pairs(character:GetChildren()) do
-                if part:IsA("BasePart") and part.CanCollide == true then
-                    if part.Name ~= "UpperTorso" and part.Name ~= "LowerTorso" and part.Name ~= "HumanoidRootPart" then
-                        part.CanCollide = false
-                    end
-                end
-            end
-        end
-    end
-end)
+-- Color Correction
+local color = Instance.new("ColorCorrectionEffect")
+color.Brightness = 0.05
+color.Contrast = 0.15
+color.Saturation = 0.2
+color.Parent = Lighting
 
-local Tab = Window:MakeTab({
-	Name = "Chức năng chính",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
+-- Sun Rays
+local sun = Instance.new("SunRaysEffect")
+sun.Intensity = 0.1
+sun.Spread = 1
+sun.Parent = Lighting
 
-Tab:AddSlider({
-	Name = "Tốc độ di chuyển",
-	Min = 16,
-	Max = 200,
-	Default = 16,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Speed",
-	Callback = function(Value)
-		speedValue = Value
-	end    
-})
+-- Atmosphere
+local atmosphere = Instance.new("Atmosphere")
+atmosphere.Density = 0.3
+atmosphere.Offset = 0.25
+atmosphere.Color = Color3.fromRGB(199, 199, 199)
+atmosphere.Decay = Color3.fromRGB(106, 112, 125)
+atmosphere.Glare = 0.1
+atmosphere.Haze = 1
+atmosphere.Parent = Lighting
 
-Tab:AddSlider({
-	Name = "Độ nhảy cao",
-	Min = 50,
-	Max = 300,
-	Default = 50,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Jump",
-	Callback = function(Value)
-		jumpValue = Value
-	end    
-})
-
-Tab:AddToggle({
-	Name = "Bật Bất Tử (God Mode)",
-	Default = false,
-	Callback = function(Value)
-		isGodMode = Value
-	end
-})
-
-Tab:AddToggle({
-	Name = "Bật Xuyên Tường (Noclip)",
-	Default = false,
-	Callback = function(Value)
-		isNoclip = Value
-	end
-})
-
-OrionLib:Init()
+-- Lighting settings
+Lighting.GlobalShadows = true
+Lighting.Brightness = 3
+Lighting.EnvironmentDiffuseScale = 1
+Lighting.EnvironmentSpecularScale = 1
+Lighting.Technology = Enum.Technology.Future
